@@ -38,8 +38,13 @@ def get_events(test, threshold=30*12):
         drop=True).reset_index().rename(columns={'index': 'row_id'})
 
 
-test = pd.read_csv('test.csv')
-print(test)
-events = get_events(test, 4)
-print(events.head(20))
-events.to_csv('submission.csv', index=False)
+def main():
+    test = pd.read_csv('test.csv')
+    print(test)
+    events = get_events(test, 0)
+    print(events.head(20))
+    events.to_csv('submission.csv', index=False)
+
+
+if __name__ == '__main__':
+    main()
