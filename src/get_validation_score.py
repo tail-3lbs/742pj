@@ -1,3 +1,7 @@
+'''
+$ python get_validation_score.py
+'''
+
 import pandas as pd
 import get_submission
 from metric import score

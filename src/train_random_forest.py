@@ -32,7 +32,9 @@ def load_dataset():
 
 def split_into_train_and_validation(train):
     series_ids = train['series_id'].unique()
-    train_ids, val_ids = train_test_split(series_ids, train_size=0.9)
+    # Don't do random split. The last 8 series have no events.
+    # train_ids, val_ids = train_test_split(series_ids, train_size=0.9)
+    train_ids, val_ids = series_ids[5:], series_ids[:5]
     val = train[train['series_id'].isin(val_ids)].copy()
     train = train[~train['series_id'].isin(val_ids)].copy()
     return train, val
@@ -60,9 +62,12 @@ def fit_classifier(X_train, y_train):
 
 
 def save_importance_plot(rf_classifier, features):
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(8, 4))
     ax.bar(features, rf_classifier.feature_importances_)
+    ax.tick_params(axis='x', rotation=-35)
     ax.set_title('Random forest feature importance')
+    plt.xticks(rotation=-30, ha='left')
+    plt.tight_layout()
     plt.savefig(f'../outputs/rf_feature_importances_{Glob.now_str}.jpg')
 
 
