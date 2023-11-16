@@ -28,6 +28,7 @@ def get_validation_score():
         '../child-mind-institute-detect-sleep-states/train_events.csv')
     val_truth = val_truth[val_truth['series_id'].isin(
         val['series_id'].unique())]
+    val_truth.to_csv(f'../outputs/submission_val_truth.csv', index=False)
     print('Val score: {}'.format(
         score(val_truth, submission, tolerances, **column_names)))
 
