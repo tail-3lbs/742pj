@@ -3,7 +3,7 @@ import get_submission
 from metric import score
 
 
-threshold = 0  # In steps.
+threshold = 12*30  # In steps.
 
 
 def get_validation_score():
@@ -19,6 +19,7 @@ def get_validation_score():
     }
     val = pd.read_csv('../outputs/val.csv')
     submission = get_submission.get_submission(val, threshold)
+    submission.to_csv(f'../outputs/submission_val.csv', index=False)
     val_truth = pd.read_csv(
         '../child-mind-institute-detect-sleep-states/train_events.csv')
     val_truth = val_truth[val_truth['series_id'].isin(
