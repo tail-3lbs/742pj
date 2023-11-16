@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def make_features(df):
     # It's important to drop timezone here, as there are different timezones in
     # the train dataset.

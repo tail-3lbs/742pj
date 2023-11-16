@@ -1,7 +1,8 @@
 import pandas as pd
+from metric import score
 
 
-def get_events(test, threshold=30*12):
+def get_submission(test, threshold=30*12):
     series_ids = test['series_id'].unique()
     events = pd.DataFrame(
         columns=['series_id', 'step', 'event', 'score'])
@@ -36,15 +37,3 @@ def get_events(test, threshold=30*12):
     events = pd.concat([events, one_events])
     return events.reset_index(
         drop=True).reset_index().rename(columns={'index': 'row_id'})
-
-
-def main():
-    test = pd.read_csv('test.csv')
-    print(test)
-    events = get_events(test, 0)
-    print(events.head(20))
-    events.to_csv('submission.csv', index=False)
-
-
-if __name__ == '__main__':
-    main()
