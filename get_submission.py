@@ -11,6 +11,7 @@ def get_submission(test, threshold=30*12):
         one_events = pd.DataFrame(
             columns=['series_id', 'step', 'event', 'score'])
         last_onset = None
+        last_wakeup = None
         for _, row in one_test.iterrows():
             if last_onset is None:
                 if row['insleep'] == True:

@@ -2,9 +2,12 @@ import pandas as pd
 import get_submission
 
 
+threshold = 0  # In steps.
+
+
 def submit_test():
     test = pd.read_csv('./test.csv')
-    events = get_submission.get_submission(test, 0)
+    events = get_submission.get_submission(test, threshold)
     events.to_csv('./submission.csv', index=False)
 
 

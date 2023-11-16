@@ -33,11 +33,11 @@ def split_into_train_and_validation(train):
     return train, val
 
 
-def extend_features(train):
-    train, features = make_features.make_features(train)
-    X_train = train[features]
-    y_train = train['awake']
-    return X_train, y_train, features
+def extend_features(df):
+    df, features = make_features.make_features(df)
+    X = df[features]
+    y = df['awake']
+    return X, y, features
 
 
 def fit_classifier(X_train, y_train):
@@ -61,14 +61,14 @@ def save_importance_plot(rf_classifier, features):
     plt.savefig(f'./rf_feature_importances_{Glob.now_str}.jpg')
 
 
-def validate(rf_classifier, val, X_val, y_val):
+def save_validation(rf_classifier, val, X_val):
     val['not_awake'] = rf_classifier.predict_proba(X_val)[:, 0]
     val['awake'] = rf_classifier.predict_proba(X_val)[:, 1]
     val['insleep'] = (val['not_awake'] > val['awake']).astype('bool')
     val.to_csv(f'./val.csv', index=False)
 
 
-def predict(rf_classifier):
+def save_prediction(rf_classifier):
     test = pd.read_parquet(
         './child-mind-institute-detect-sleep-states/test_series.parquet')
     test, features = make_features.make_features(test)
@@ -83,11 +83,11 @@ def main():
     train = load_dataset()
     train, val = split_into_train_and_validation(train)
     X_train, y_train, features = extend_features(train)
-    X_val, y_val, _ = extend_features(val)
+    X_val, _, _ = extend_features(val)
     rf_classifier = fit_classifier(X_train, y_train)
     save_importance_plot(rf_classifier, features)
-    validate(rf_classifier, val, X_val, y_val)
-    predict(rf_classifier)
+    save_validation(rf_classifier, val, X_val)
+    save_prediction(rf_classifier)
 
 
 if __name__ == '__main__':
