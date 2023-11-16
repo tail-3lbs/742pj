@@ -6,9 +6,9 @@ threshold = 0  # In steps.
 
 
 def submit_test():
-    test = pd.read_csv('./test.csv')
+    test = pd.read_csv('../outputs/test.csv')
     events = get_submission.get_submission(test, threshold)
-    events.to_csv('./submission.csv', index=False)
+    events.to_csv('../outputs/submission.csv', index=False)
 
 
 def main():

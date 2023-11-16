@@ -59,14 +59,14 @@ def save_importance_plot(rf_classifier, features):
     fig, ax = plt.subplots()
     ax.bar(features, rf_classifier.feature_importances_)
     ax.set_title('Random forest feature importance')
-    plt.savefig(f'./rf_feature_importances_{Glob.now_str}.jpg')
+    plt.savefig(f'../outputs/rf_feature_importances_{Glob.now_str}.jpg')
 
 
 def save_validation(rf_classifier, val, X_val):
     val['not_awake'] = rf_classifier.predict_proba(X_val)[:, 0]
     val['awake'] = rf_classifier.predict_proba(X_val)[:, 1]
     val['insleep'] = (val['not_awake'] > val['awake']).astype('bool')
-    val.to_csv(f'./val.csv', index=False)
+    val.to_csv(f'../outputs/val.csv', index=False)
 
 
 def save_prediction(rf_classifier):
@@ -77,7 +77,7 @@ def save_prediction(rf_classifier):
     test['not_awake'] = rf_classifier.predict_proba(X_test)[:, 0]
     test['awake'] = rf_classifier.predict_proba(X_test)[:, 1]
     test['insleep'] = (test['not_awake'] > test['awake']).astype('bool')
-    test.to_csv(f'./test.csv', index=False)
+    test.to_csv(f'../outputs/test.csv', index=False)
 
 
 def main():
