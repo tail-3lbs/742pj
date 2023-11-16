@@ -15,7 +15,8 @@ class Glob:
 def load_dataset():
     # The lightweight training dataset 'Zzzs_train_multi.parquet' is from
     # https://www.kaggle.com/datasets/carlmcbrideellis/zzzs-lightweight-training-dataset-target?select=Zzzs_train_multi.parquet
-    train = pd.read_parquet('./Zzzs_train_multi.parquet')
+    train = pd.read_parquet(
+        '../child-mind-institute-detect-sleep-states/Zzzs_train_multi.parquet')
     if Glob.mode == 2:
         train = train.head(1000).copy()
         train['awake'] = np.random.default_rng().integers(
@@ -70,7 +71,7 @@ def save_validation(rf_classifier, val, X_val):
 
 def save_prediction(rf_classifier):
     test = pd.read_parquet(
-        './child-mind-institute-detect-sleep-states/test_series.parquet')
+        '../child-mind-institute-detect-sleep-states/test_series.parquet')
     test, features = make_features.make_features(test)
     X_test = test[features]
     test['not_awake'] = rf_classifier.predict_proba(X_test)[:, 0]

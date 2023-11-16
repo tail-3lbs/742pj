@@ -1,5 +1,6 @@
 import pandas as pd
 import get_submission
+from metric import score
 
 
 threshold = 0  # In steps.
@@ -19,10 +20,11 @@ def get_validation_score():
     val = pd.read_csv('./val.csv')
     submission = get_submission.get_submission(val, threshold)
     val_truth = pd.read_csv(
-        './child-mind-institute-detect-sleep-states/train_events.csv')
+        '../child-mind-institute-detect-sleep-states/train_events.csv')
     val_truth = val_truth[val_truth['series_id'].isin(
         val['series_id'].unique())]
-    print(f"Val score: {score(val_truth, submission, tolerances, **column_names)}")
+    print('Val score: {}'.format(
+        score(val_truth, submission, tolerances, **column_names)))
 
 
 def main():

@@ -1,5 +1,4 @@
 import pandas as pd
-from metric import score
 
 
 def get_submission(test, threshold=30*12):
@@ -36,5 +35,6 @@ def get_submission(test, threshold=30*12):
                     last_onset = None
                     last_wakeup = None
     events = pd.concat([events, one_events])
+    events = events.astype({'step': 'int32'})
     return events.reset_index(
         drop=True).reset_index().rename(columns={'index': 'row_id'})
