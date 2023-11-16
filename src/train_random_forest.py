@@ -1,3 +1,7 @@
+'''
+$ python train_random_forest.py
+'''
+
 from datetime import datetime
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
@@ -28,9 +32,11 @@ def load_dataset():
 
 def split_into_train_and_validation(train):
     series_ids = train['series_id'].unique()
-    train_ids, val_ids = train_test_split(series_ids, train_size=0.9)
+    # Don't do random split. The last 8 series have no events.
+    # train_ids, val_ids = train_test_split(series_ids, train_size=0.9)
+    train_ids, val_ids = series_ids[5:], series_ids[:5]
     val = train[train['series_id'].isin(val_ids)].copy()
-    train = train[~train['series_id'].isin(val_ids)].copy()
+    train = train[train['series_id'].isin(train_ids)].copy()
     return train, val
 
 
@@ -56,13 +62,16 @@ def fit_classifier(X_train, y_train):
 
 
 def save_importance_plot(rf_classifier, features):
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(8, 4))
     ax.bar(features, rf_classifier.feature_importances_)
+    ax.tick_params(axis='x', rotation=-35)
     ax.set_title('Random forest feature importance')
+    plt.xticks(rotation=-30, ha='left')
+    plt.tight_layout()
     plt.savefig(f'../outputs/rf_feature_importances_{Glob.now_str}.jpg')
 
 
-def save_validation(rf_classifier, val, X_val):
+def save_validation(rf_classifier, X_val, val):
     val['not_awake'] = rf_classifier.predict_proba(X_val)[:, 0]
     val['awake'] = rf_classifier.predict_proba(X_val)[:, 1]
     val['insleep'] = (val['not_awake'] > val['awake']).astype('bool')
@@ -83,11 +92,14 @@ def save_prediction(rf_classifier):
 def main():
     train = load_dataset()
     train, val = split_into_train_and_validation(train)
+    print('Begin to make features')
     X_train, y_train, features = extend_features(train)
-    X_val, _, _ = extend_features(val)
+    print('Begin to fit')
     rf_classifier = fit_classifier(X_train, y_train)
     save_importance_plot(rf_classifier, features)
-    save_validation(rf_classifier, val, X_val)
+    print('Begin to validate and predict')
+    X_val, _, _ = extend_features(val)
+    save_validation(rf_classifier, X_val, val)
     save_prediction(rf_classifier)
 
 
