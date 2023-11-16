@@ -3,7 +3,7 @@ import get_submission
 from metric import score
 
 
-threshold = 12*30  # In steps.
+threshold = 30*12  # In steps.
 
 
 def get_validation_score():

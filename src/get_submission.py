@@ -34,7 +34,8 @@ def get_submission(test, threshold=30*12):
                             [one_events, last_onset, last_wakeup])
                     last_onset = None
                     last_wakeup = None
-    events = pd.concat([events, one_events])
+        events = pd.concat([events, one_events])
+
     events = events.astype({'step': 'int32'})
     return events.reset_index(
         drop=True).reset_index().rename(columns={'index': 'row_id'})

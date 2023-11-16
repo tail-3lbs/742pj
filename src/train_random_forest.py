@@ -1,3 +1,7 @@
+'''
+$ python train_random_forest.py
+'''
+
 from datetime import datetime
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
@@ -83,10 +87,13 @@ def save_prediction(rf_classifier):
 def main():
     train = load_dataset()
     train, val = split_into_train_and_validation(train)
+    print('Begin to make features')
     X_train, y_train, features = extend_features(train)
     X_val, _, _ = extend_features(val)
+    print('Begin to fit')
     rf_classifier = fit_classifier(X_train, y_train)
     save_importance_plot(rf_classifier, features)
+    print('Begin to validate and predict')
     save_validation(rf_classifier, val, X_val)
     save_prediction(rf_classifier)
 
