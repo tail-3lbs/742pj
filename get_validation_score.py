@@ -16,7 +16,7 @@ def get_validation_score():
         'onset': [12, 36, 60, 90, 120, 150, 180, 240, 300, 360],
         'wakeup': [12, 36, 60, 90, 120, 150, 180, 240, 300, 360]
     }
-    val = pd.read_csv('val.csv')
+    val = pd.read_csv('./val.csv')
     submission = get_submission.get_submission(val, threshold)
     val_truth = pd.read_csv(
         './child-mind-institute-detect-sleep-states/train_events.csv')

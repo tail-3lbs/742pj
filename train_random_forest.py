@@ -8,7 +8,7 @@ import make_features
 
 
 class Glob:
-    mode = 1
+    mode = 0
     now_str = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
 
