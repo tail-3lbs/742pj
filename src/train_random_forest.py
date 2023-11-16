@@ -36,7 +36,7 @@ def split_into_train_and_validation(train):
     # train_ids, val_ids = train_test_split(series_ids, train_size=0.9)
     train_ids, val_ids = series_ids[5:], series_ids[:5]
     val = train[train['series_id'].isin(val_ids)].copy()
-    train = train[~train['series_id'].isin(val_ids)].copy()
+    train = train[train['series_id'].isin(train_ids)].copy()
     return train, val
 
 
@@ -71,7 +71,7 @@ def save_importance_plot(rf_classifier, features):
     plt.savefig(f'../outputs/rf_feature_importances_{Glob.now_str}.jpg')
 
 
-def save_validation(rf_classifier, val, X_val):
+def save_validation(rf_classifier, X_val, val):
     val['not_awake'] = rf_classifier.predict_proba(X_val)[:, 0]
     val['awake'] = rf_classifier.predict_proba(X_val)[:, 1]
     val['insleep'] = (val['not_awake'] > val['awake']).astype('bool')
@@ -94,12 +94,12 @@ def main():
     train, val = split_into_train_and_validation(train)
     print('Begin to make features')
     X_train, y_train, features = extend_features(train)
-    X_val, _, _ = extend_features(val)
     print('Begin to fit')
     rf_classifier = fit_classifier(X_train, y_train)
     save_importance_plot(rf_classifier, features)
     print('Begin to validate and predict')
-    save_validation(rf_classifier, val, X_val)
+    X_val, _, _ = extend_features(val)
+    save_validation(rf_classifier, X_val, val)
     save_prediction(rf_classifier)
 
 
