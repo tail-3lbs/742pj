@@ -24,7 +24,7 @@ def __make_features2(df):
     df['hour'] = df['timestamp'].dt.hour
 
     periods = 20
-    df['anglez'] = abs(df['anglez'])
+    df['anglez_abs'] = abs(df['anglez'])
     df['anglez_diff'] = df.groupby('series_id')['anglez'].diff(periods=periods).fillna(method='bfill').astype('float16')
     df['enmo_diff'] = df.groupby('series_id')['enmo'].diff(periods=periods).fillna(method='bfill').astype('float16')
     df['anglez_rolling_mean'] = df['anglez'].rolling(periods,center=True).mean().fillna(method='bfill').fillna(method='ffill').astype('float16')
@@ -40,6 +40,7 @@ def __make_features2(df):
 
     features = ['hour',
             'anglez',
+            'anglez_abs',
             'anglez_rolling_mean',
             'anglez_rolling_max',
             'anglez_rolling_std',
