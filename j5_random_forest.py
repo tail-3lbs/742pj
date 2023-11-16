@@ -57,7 +57,7 @@ def predict(rf_classifier):
     test['not_awake'] = rf_classifier.predict_proba(X_test)[:, 0]
     test['awake'] = rf_classifier.predict_proba(X_test)[:, 1]
     test['insleep'] = (test['not_awake'] > test['awake']).astype('bool')
-    test.to_csv('./test.csv', index=False)
+    test.to_csv(f'./test_mode{Glob.mode}.csv', index=False)
 
 
 def main():
