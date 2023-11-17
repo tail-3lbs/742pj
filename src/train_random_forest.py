@@ -63,7 +63,13 @@ def extend_features(df):
     print(f'X.shape: {X.shape}')
     print(f'X.isnull().values.any(): {X.isnull().values.any()}')
     print('-'*50)
-    return X, y
+    return normalize(X), y
+
+
+def normalize(df):
+    # Pandas automatically applies colomn-wise function.
+    normalized_df = (df-df.mean())/df.std()
+    return normalized_df
 
 
 def fit_classifier(X_train, y_train):
