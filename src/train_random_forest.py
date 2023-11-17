@@ -47,6 +47,7 @@ def extend_features(df):
     X = df[features]
     y = df['awake']
     print(f'X.shape: {X.shape}')
+    print(f'X.isnull().values.any(): {X.isnull().values.any()}')
     print('-'*50)
     return X, y, features
 
@@ -83,6 +84,9 @@ def save_validation(rf_classifier, X_val, val):
 
 
 def save_prediction(rf_classifier):
+    # Test file has time range less than 30 minutes. So the X matrix
+    # will have NaN if we are using rolling with window = 30 minutes.
+    # It's OK. Actually we should never run for test file. It's useless.
     test = pd.read_parquet(
         '../child-mind-institute-detect-sleep-states/test_series.parquet')
     test, features = make_features.make_features(test)
@@ -104,7 +108,7 @@ def main():
     print('Begin to validate and predict')
     X_val, _, _ = extend_features(val)
     save_validation(rf_classifier, X_val, val)
-    save_prediction(rf_classifier)
+    # save_prediction(rf_classifier)
 
 
 if __name__ == '__main__':
