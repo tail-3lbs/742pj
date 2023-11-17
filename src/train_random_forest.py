@@ -41,9 +41,13 @@ def split_into_train_and_validation(train):
 
 
 def extend_features(df):
+    print('-'*50)
+    print(f'df.shape: {df.shape}')
     df, features = make_features.make_features(df)
     X = df[features]
     y = df['awake']
+    print(f'X.shape: {X.shape}')
+    print('-'*50)
     return X, y, features
 
 

@@ -9,8 +9,8 @@ from metric import score
 import matplotlib.pyplot as plt
 
 steps_per_min = 12
-least_sleep_time = 30*steps_per_min
-least_awake_time = 15*steps_per_min
+least_sleep_time = 90*steps_per_min
+least_awake_time = 30*steps_per_min
 
 
 def get_validation_score():
@@ -37,6 +37,11 @@ def get_validation_score():
     print('Val score: {:.3f}'.format(
         score(val_truth, submission, tolerances, **column_names)))
     for series_id in val['series_id'].unique():
+        print('Val score of {}: {:.3f}'.format(
+            series_id,
+            score(val_truth[val_truth['series_id'] == series_id],
+                  submission[submission['series_id'] == series_id],
+                  tolerances, **column_names)))
         save_prediction(series_id,
                         val[val['series_id'] == series_id],
                         submission[submission['series_id'] == series_id],
@@ -77,7 +82,8 @@ def save_prediction(series_id, val, submission, val_truth):
         axs[0].text(
             (submission.iloc[i]['step']+submission.iloc[i+1]['step'])/2,
             (np.min(val['enmo'])+np.max(val['enmo']))/4,
-            f"{(submission.iloc[i]['score']+submission.iloc[i+1]['score'])/2:.4f}",
+            f'{:.4f}'.format(
+                (submission.iloc[i]['score']+submission.iloc[i+1]['score'])/2),
             rotation=90, ha='center')
     axs[0].set_ylim([np.min(val['enmo']), np.max(val['enmo'])])
     axs[0].legend()
