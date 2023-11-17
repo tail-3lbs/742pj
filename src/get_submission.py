@@ -50,6 +50,8 @@ def get_submission(test, least_sleep_time, least_awake_time):
                 continue
             last_window = smoothed_windows[-1]
             if last_window[1].step + least_awake_time > current_window[0].step:
+                score = (last_window[0].score + current_window[1].score)/2
+                last_window[0].score, current_window[1].score = score, score
                 smoothed_windows[-1] = (last_window[0], current_window[1])
             else:
                 smoothed_windows.append(current_window)
