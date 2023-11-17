@@ -166,3 +166,5 @@ cython_debug/
 train_events.csv
 val.csv
 test.csv
+submission_val.csv
+submission_val_truth.csv
