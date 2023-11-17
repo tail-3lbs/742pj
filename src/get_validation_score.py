@@ -82,7 +82,7 @@ def save_prediction(series_id, val, submission, val_truth):
         axs[0].text(
             (submission.iloc[i]['step']+submission.iloc[i+1]['step'])/2,
             (np.min(val['enmo'])+np.max(val['enmo']))/4,
-            f'{:.4f}'.format(
+            '{:.4f}'.format(
                 (submission.iloc[i]['score']+submission.iloc[i+1]['score'])/2),
             rotation=90, ha='center')
     axs[0].set_ylim([np.min(val['enmo']), np.max(val['enmo'])])

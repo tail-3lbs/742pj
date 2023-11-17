@@ -42,7 +42,6 @@ def __make_features2(df):
     df['anglez_rolling_mean_diff_2'] = df['anglez_rolling_mean_left_aligned_2'] - df['anglez_rolling_mean_right_aligned_2']
     df['enmo_rolling_mean_diff_2'] = df['enmo_rolling_mean_left_aligned_2'] - df['enmo_rolling_mean_right_aligned_2']
 
-
     window = 30*steps_per_min
     for series_id in df['series_id'].unique():
         df.loc[df['series_id']==series_id, 'anglez_rolling_mean_right_aligned_3'] = df.loc[df['series_id']==series_id]['anglez'].rolling(window=window, min_periods=1).mean()
