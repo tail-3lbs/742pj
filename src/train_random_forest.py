@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import features
+import time
 
 
 class Glob:
@@ -101,4 +102,6 @@ def main():
 
 
 if __name__ == '__main__':
+    start = time.time()
     main()
+    print(f'Total time: {time.time() - start:.2f} seconds')
