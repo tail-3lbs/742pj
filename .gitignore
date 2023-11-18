@@ -162,5 +162,7 @@ cython_debug/
 # 
 .DS_Store
 *.parquet
-*.jpg
-*.csv
+child-mind*/*.csv
+outputs/*.csv
+*predictions*.jpg
+*feature_importances*.jpg
