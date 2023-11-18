@@ -43,7 +43,7 @@ def split_into_train_and_validation(train):
 def fit_classifier(X_train, y_train):
     if Glob.mode == 0:
         rf_classifier = RandomForestClassifier(
-            n_estimators=100, n_jobs=-1)
+            n_estimators=50, min_samples_leaf=300, n_jobs=-1)
     elif Glob.mode == 1:
         rf_classifier = RandomForestClassifier(
             n_estimators=2, max_depth=2, n_jobs=-1)
