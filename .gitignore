@@ -163,6 +163,4 @@ cython_debug/
 .DS_Store
 *.parquet
 *.jpg
-train_events.csv
-val.csv
-test.csv
+*.csv

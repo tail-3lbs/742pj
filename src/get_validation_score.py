@@ -7,10 +7,11 @@ import numpy as np
 import get_submission
 from metric import score
 import matplotlib.pyplot as plt
+import make_features
 
 steps_per_min = 12
-least_sleep_time = 120*steps_per_min
-least_awake_time = 60*steps_per_min
+least_sleep_time = 90*steps_per_min
+least_awake_time = 30*steps_per_min
 
 
 def get_validation_score():
@@ -34,9 +35,14 @@ def get_validation_score():
     val_truth = val_truth[val_truth['series_id'].isin(
         val['series_id'].unique())]
     val_truth.to_csv(f'../outputs/submission_val_truth.csv', index=False)
-    print('Val score: {}'.format(
+    print('Val score: {:.3f}'.format(
         score(val_truth, submission, tolerances, **column_names)))
     for series_id in val['series_id'].unique():
+        print('Val score of {}: {:.3f}'.format(
+            series_id,
+            score(val_truth[val_truth['series_id'] == series_id],
+                  submission[submission['series_id'] == series_id],
+                  tolerances, **column_names)))
         save_prediction(series_id,
                         val[val['series_id'] == series_id],
                         submission[submission['series_id'] == series_id],
@@ -55,47 +61,40 @@ def postprocess(val, periods=15*12):
 
 
 def save_prediction(series_id, val, submission, val_truth):
-    fig, axs = plt.subplots(2, 1, figsize=(16, 8))
-    axs[0].plot(val['step'], val['enmo'], 'r-', alpha=.6, label='enmo')
-    axs[0].set_ylabel('enmo')
-    axs[0].set_xlabel('step')
-    true_steps = list(val_truth['step'])
-    for i in range(0, len(true_steps), 2):
-        axs[0].fill_betweenx(
-            np.linspace((np.min(val['enmo'])+np.max(val['enmo']))/2,
-                        np.max(val['enmo']), 5),
-            [true_steps[i]]*5, [true_steps[i+1]]*5, alpha=0.2, color='blue',
-            hatch='x', label="_"*(1 if i > 0 else 0) + "truth")
-    pred_steps = list(submission['step'])
-    for i in range(0, len(pred_steps), 2):
-        axs[0].fill_betweenx(
-            np.linspace(np.min(val['enmo']),
-                        (np.min(val['enmo'])+np.max(val['enmo']))/2, 5),
-            [pred_steps[i]]*5, [pred_steps[i+1]]*5, alpha=0.2, color='green',
-            label="_"*(1 if i > 0 else 0) + "prediction")
-    axs[0].set_ylim([np.min(val['enmo']), np.max(val['enmo'])])
-    axs[0].legend()
-    axs[0].set_title(f'Series ID: {series_id}')
-    axs[1].plot(val['step'], val['anglez'], 'r-', alpha=.6, label='anglez')
-    axs[1].set_ylabel('anglez')
-    axs[1].set_xlabel('step')
-    true_steps = list(val_truth['step'])
-    for i in range(0, len(true_steps), 2):
-        axs[1].fill_betweenx(
-            np.linspace((np.min(val['anglez'])+np.max(val['anglez']))/2,
-                        np.max(val['anglez']), 5),
-            [true_steps[i]]*5, [true_steps[i+1]]*5, alpha=0.2, color='blue',
-            hatch='x', label="_"*(1 if i > 0 else 0) + "truth")
-    pred_steps = list(submission['step'])
-    for i in range(0, len(pred_steps), 2):
-        axs[1].fill_betweenx(
-            np.linspace(np.min(val['anglez']),
-                        (np.min(val['anglez'])+np.max(val['anglez']))/2, 5),
-            [pred_steps[i]]*5, [pred_steps[i+1]]*5, alpha=0.2, color='green',
-            label="_"*(1 if i > 0 else 0) + "prediction")
-    axs[1].set_ylim([np.min(val['anglez']), np.max(val['anglez'])])
-    axs[1].legend()
-    plt.savefig(f'../outputs/predictions_{series_id}.jpg')
+    for feature in make_features.features:
+        fig, ax = plt.subplots(figsize=(16, 8))
+        ax.plot(val['step'], val[feature], 'r-', alpha=.6, label=feature)
+        ax.set_ylabel(feature)
+        ax.set_xlabel('step')
+        true_steps = list(val_truth['step'])
+        for i in range(0, len(true_steps), 2):
+            ax.fill_betweenx(
+                np.linspace((np.min(val[feature])+np.max(val[feature]))/2,
+                            np.max(val[feature]), 5),
+                [true_steps[i]]*5, [true_steps[i+1]]*5,
+                alpha=0.2, color='blue',
+                hatch='x', label='_'*(1 if i > 0 else 0) + 'truth')
+        for i in range(0, len(submission), 2):
+            ax.fill_betweenx(
+                np.linspace(np.min(val[feature]),
+                            (np.min(val[feature])+np.max(val[feature]))/2, 5),
+                # Here df.iloc does not use index. It's the n-th row.
+                [submission.iloc[i]['step']] * \
+                5, [submission.iloc[i+1]['step']]*5,
+                alpha=0.2, color='green',
+                label='_'*(1 if i > 0 else 0) + 'prediction')
+            ax.text(
+                (submission.iloc[i]['step']+submission.iloc[i+1]['step'])/2,
+                (np.min(val[feature])+np.max(val[feature]))/4,
+                '{:.4f}'.format(
+                    (submission.iloc[i]['score'] +
+                     submission.iloc[i+1]['score'])/2),
+                rotation=90, ha='center')
+        ax.set_ylim([np.min(val[feature]), np.max(val[feature])])
+        ax.legend()
+        ax.set_title(f'Series ID: {series_id}')
+        plt.savefig(f'../outputs/predictions_{series_id}_{feature}.jpg')
+        plt.close()
 
 
 def main():
