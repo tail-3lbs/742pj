@@ -13,6 +13,7 @@ features3 = ['hour',
         'anglez_std',
         'enmo_mean',
         'enmo_std',
+
         'anglez_mean__std_centered',
         'enmo_mean__std_centered',
         ]
@@ -22,20 +23,61 @@ features5 = ['hour',
         'anglez_std',
         'enmo_mean',
         'enmo_std',
+
         'anglez_mean__std_centered',
         'enmo_mean__std_centered',
-        'anglez_mean_rolling_mean_right_aligned',
-        'anglez_mean_rolling_mean_left_aligned',
-        'anglez_std_rolling_mean_right_aligned',
-        'anglez_std_rolling_mean_left_aligned',
-        'enmo_mean_rolling_mean_right_aligned',
-        'enmo_mean_rolling_mean_left_aligned',
-        'enmo_std_rolling_mean_right_aligned',
-        'enmo_std_rolling_mean_left_aligned',
-        'anglez_mean__std_centered_rolling_mean_right_aligned',
-        'anglez_mean__std_centered_rolling_mean_left_aligned',
-        'enmo_mean__std_centered_rolling_mean_right_aligned',
-        'enmo_mean__std_centered_rolling_mean_left_aligned',
+
+        'anglez_mean_rolling_mean_right_aligned_60',
+        'anglez_mean_rolling_mean_left_aligned_60',
+        'anglez_std_rolling_mean_right_aligned_60',
+        'anglez_std_rolling_mean_left_aligned_60',
+        'enmo_mean_rolling_mean_right_aligned_60',
+        'enmo_mean_rolling_mean_left_aligned_60',
+        'enmo_std_rolling_mean_right_aligned_60',
+        'enmo_std_rolling_mean_left_aligned_60',
+        'anglez_mean__std_centered_rolling_mean_right_aligned_60',
+        'anglez_mean__std_centered_rolling_mean_left_aligned_60',
+        'enmo_mean__std_centered_rolling_mean_right_aligned_60',
+        'enmo_mean__std_centered_rolling_mean_left_aligned_60',
+
+        'anglez_mean_rolling_mean_right_aligned_30',
+        'anglez_mean_rolling_mean_left_aligned_30',
+        'anglez_std_rolling_mean_right_aligned_30',
+        'anglez_std_rolling_mean_left_aligned_30',
+        'enmo_mean_rolling_mean_right_aligned_30',
+        'enmo_mean_rolling_mean_left_aligned_30',
+        'enmo_std_rolling_mean_right_aligned_30',
+        'enmo_std_rolling_mean_left_aligned_30',
+        'anglez_mean__std_centered_rolling_mean_right_aligned_30',
+        'anglez_mean__std_centered_rolling_mean_left_aligned_30',
+        'enmo_mean__std_centered_rolling_mean_right_aligned_30',
+        'enmo_mean__std_centered_rolling_mean_left_aligned_30',
+
+        'anglez_mean_rolling_mean_right_aligned_15',
+        'anglez_mean_rolling_mean_left_aligned_15',
+        'anglez_std_rolling_mean_right_aligned_15',
+        'anglez_std_rolling_mean_left_aligned_15',
+        'enmo_mean_rolling_mean_right_aligned_15',
+        'enmo_mean_rolling_mean_left_aligned_15',
+        'enmo_std_rolling_mean_right_aligned_15',
+        'enmo_std_rolling_mean_left_aligned_15',
+        'anglez_mean__std_centered_rolling_mean_right_aligned_15',
+        'anglez_mean__std_centered_rolling_mean_left_aligned_15',
+        'enmo_mean__std_centered_rolling_mean_right_aligned_15',
+        'enmo_mean__std_centered_rolling_mean_left_aligned_15',
+
+        'anglez_mean_rolling_mean_right_aligned_5',
+        'anglez_mean_rolling_mean_left_aligned_5',
+        'anglez_std_rolling_mean_right_aligned_5',
+        'anglez_std_rolling_mean_left_aligned_5',
+        'enmo_mean_rolling_mean_right_aligned_5',
+        'enmo_mean_rolling_mean_left_aligned_5',
+        'enmo_std_rolling_mean_right_aligned_5',
+        'enmo_std_rolling_mean_left_aligned_5',
+        'anglez_mean__std_centered_rolling_mean_right_aligned_5',
+        'anglez_mean__std_centered_rolling_mean_left_aligned_5',
+        'enmo_mean__std_centered_rolling_mean_right_aligned_5',
+        'enmo_mean__std_centered_rolling_mean_left_aligned_5',
         ]
 
 features = features5
@@ -67,18 +109,60 @@ def __make_features5(df):
     # In short, don't use 'steps_per_min' here.
     window = 60
     for series_id in df['series_id'].unique():
-        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_right_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_left_aligned_60'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+    window = 30
+    for series_id in df['series_id'].unique():
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_right_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_left_aligned_30'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+    window = 15
+    for series_id in df['series_id'].unique():
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_right_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_left_aligned_15'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+    window = 5
+    for series_id in df['series_id'].unique():
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_std_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_mean'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_std_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_std'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'anglez_mean__std_centered_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['anglez_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_right_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean()
+        df.loc[df['series_id']==series_id, 'enmo_mean__std_centered_rolling_mean_left_aligned_5'] = df.loc[df['series_id']==series_id]['enmo_mean__std_centered'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
     return df
 
 
