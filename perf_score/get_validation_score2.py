@@ -1,13 +1,17 @@
 '''
 $ python get_validation_score2.py
 '''
+import os
+import sys
+sys.path.insert(1, os.getcwd()+'/../src')
+
 
 import pandas as pd
 import numpy as np
-import get_submission
 from metric import score
 import matplotlib.pyplot as plt
 import make_features
+
 
 steps_per_min = 12
 least_sleep_time = 90*steps_per_min
@@ -25,8 +29,8 @@ def get_validation_score():
         'onset': [12, 36, 60, 90, 120, 150, 180, 240, 300, 360],
         'wakeup': [12, 36, 60, 90, 120, 150, 180, 240, 300, 360]
     }
-    submission = pd.read_csv('../outputs/submission_val.csv')
-    val_truth = pd.read_csv('../outputs/submission_val_truth.csv')
+    submission = pd.read_csv('./submission_val.csv')
+    val_truth = pd.read_csv('./submission_val_truth.csv')
     print('Val score: {:.3f}'.format(
         score(val_truth, submission, tolerances, **column_names)))
     for series_id in submission['series_id'].unique():
@@ -67,7 +71,7 @@ def save_prediction(series_id, perf_score, submission, val_truth):
             rotation=90, ha='center')
     ax.legend()
     ax.set_title(f'Series ID: {series_id}, Perf score: {perf_score:.3f}')
-    plt.savefig(f'../outputs/perf_score_{series_id}.jpg')
+    plt.savefig(f'./perf_score_{series_id}.jpg')
     plt.close()
 
 
