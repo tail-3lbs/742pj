@@ -12,7 +12,7 @@ features1 = ['hour',
         'enmo_max',
         ]
 
-features2 = ['hour',
+features5 = ['hour',
         'anglez',
         'enmo',
         'anglez_rolling_mean_right_aligned_1',
@@ -34,28 +34,34 @@ features2 = ['hour',
         ]
 
 features3 = ['hour',
-        'anglez_rolling_std_centered',
-        'enmo_rolling_std_centered',
-        'anglez_rolling_mean_right_aligned_rolling_std_centered',
-        'anglez_rolling_mean_left_aligned_rolling_std_centered',
-        'enmo_rolling_mean_right_aligned_rolling_std_centered',
-        'enmo_rolling_mean_left_aligned_rolling_std_centered',
-        'anglez_rolling_mean_diff_rolling_std_centered',
-        'enmo_rolling_mean_diff_rolling_std_centered',
+        'anglez_mean',
+        'anglez_std',
+        'anglez_min',
+        'anglez_max',
+        'enmo_mean',
+        'enmo_std',
+        'enmo_min',
+        'enmo_max',
+        'anglez_mean__std_centered',
+        'enmo_mean__std_centered',
+        'anglez_min__std_centered',
+        'enmo_min__std_centered',
+        'anglez_max__std_centered',
+        'enmo_max__std_centered',
         ]
 
-features = features1
+features = features3
 
 
 def make_features(df):
-    return __make_features1(df)
+    return __make_features3(df)
 
 
 def __make_features1(df):
     return df
 
 
-def __make_features2(df):
+def __make_features5(df):
     # Note that this window is between rows, not steps.
     # So the interval here depends on the granularity of input dataframe.
     # In short, don't use 'steps_per_min' here.
@@ -93,25 +99,12 @@ def __make_features3(df):
     # So the interval here depends on the granularity of input dataframe.
     # In short, don't use 'steps_per_min' here.
     window = 5
-
-    df['anglez_rolling_std_centered'] = df.groupby('series_id', as_index=False)['anglez'].rolling(window=window, min_periods=1, center=True).std()['anglez']
-    df['enmo_rolling_std_centered'] = df.groupby('series_id', as_index=False)['enmo'].rolling(window=window, min_periods=1, center=True).std()['enmo']
-
-    for series_id in df['series_id'].unique():
-        df.loc[df['series_id']==series_id, 'anglez_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['anglez'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'anglez_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['anglez'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-        df.loc[df['series_id']==series_id, 'enmo_rolling_mean_right_aligned'] = df.loc[df['series_id']==series_id]['enmo'].rolling(window=window, min_periods=1).mean()
-        df.loc[df['series_id']==series_id, 'enmo_rolling_mean_left_aligned'] = df.loc[df['series_id']==series_id]['enmo'].rolling(window=window, min_periods=1).mean().shift(-window+1).fillna(method='ffill')
-    df['anglez_rolling_mean_diff'] = df['anglez_rolling_mean_left_aligned'] - df['anglez_rolling_mean_right_aligned']
-    df['enmo_rolling_mean_diff'] = df['enmo_rolling_mean_left_aligned'] - df['enmo_rolling_mean_right_aligned']
-
-    df['anglez_rolling_mean_right_aligned_rolling_std_centered'] = df.groupby('series_id', as_index=False)['anglez_rolling_mean_right_aligned'].rolling(window=window, min_periods=1, center=True).std()['anglez_rolling_mean_right_aligned']
-    df['anglez_rolling_mean_left_aligned_rolling_std_centered'] = df.groupby('series_id', as_index=False)['anglez_rolling_mean_left_aligned'].rolling(window=window, min_periods=1, center=True).std()['anglez_rolling_mean_left_aligned']
-    df['enmo_rolling_mean_right_aligned_rolling_std_centered'] = df.groupby('series_id', as_index=False)['enmo_rolling_mean_right_aligned'].rolling(window=window, min_periods=1, center=True).std()['enmo_rolling_mean_right_aligned']
-    df['enmo_rolling_mean_left_aligned_rolling_std_centered'] = df.groupby('series_id', as_index=False)['enmo_rolling_mean_left_aligned'].rolling(window=window, min_periods=1, center=True).std()['enmo_rolling_mean_left_aligned']
-    df['anglez_rolling_mean_diff_rolling_std_centered'] = df.groupby('series_id', as_index=False)['anglez_rolling_mean_diff'].rolling(window=window, min_periods=1, center=True).std()['anglez_rolling_mean_diff']
-    df['enmo_rolling_mean_diff_rolling_std_centered'] = df.groupby('series_id', as_index=False)['enmo_rolling_mean_diff'].rolling(window=window, min_periods=1, center=True).std()['enmo_rolling_mean_diff']
-
+    df['anglez_mean__std_centered'] = df.groupby('series_id', as_index=False)['anglez_mean'].rolling(window=window, min_periods=1, center=True).std()['anglez_mean']
+    df['enmo_mean__std_centered'] = df.groupby('series_id', as_index=False)['enmo_mean'].rolling(window=window, min_periods=1, center=True).std()['enmo_mean']
+    df['anglez_min__std_centered'] = df.groupby('series_id', as_index=False)['anglez_min'].rolling(window=window, min_periods=1, center=True).std()['anglez_min']
+    df['enmo_min__std_centered'] = df.groupby('series_id', as_index=False)['enmo_min'].rolling(window=window, min_periods=1, center=True).std()['enmo_min']
+    df['anglez_max__std_centered'] = df.groupby('series_id', as_index=False)['anglez_max'].rolling(window=window, min_periods=1, center=True).std()['anglez_max']
+    df['enmo_max__std_centered'] = df.groupby('series_id', as_index=False)['enmo_max'].rolling(window=window, min_periods=1, center=True).std()['enmo_max']
     return df
 
 
@@ -163,5 +156,6 @@ def extend_features(df):
     y = df['awake']
     print(f'X.shape: {X.shape}')
     print(f'X.isnull().values.any(): {X.isnull().values.any()}')
+    print(X)
     print('-'*50)
     return normalize(X), y

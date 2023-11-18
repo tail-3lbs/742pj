@@ -17,10 +17,10 @@ class Glob:
 
 
 def load_dataset():
-    # The lightweight training dataset 'Zzzs_train_multi.parquet' is from
-    # https://www.kaggle.com/datasets/carlmcbrideellis/zzzs-lightweight-training-dataset-target?select=Zzzs_train_multi.parquet
+    # The lightweight training dataset 'Zzzs_train.parquet' is from
+    # https://www.kaggle.com/datasets/carlmcbrideellis/zzzs-lightweight-training-dataset-target?select=Zzzs_train.parquet
     train = pd.read_parquet(
-        '../child-mind-institute-detect-sleep-states/Zzzs_train_multi.parquet')
+        '../child-mind-institute-detect-sleep-states/Zzzs_train.parquet')
     if Glob.mode == 2:
         train = train.head(1000).copy()
         train['awake'] = np.random.default_rng().integers(
@@ -43,13 +43,13 @@ def split_into_train_and_validation(train):
 def fit_classifier(X_train, y_train):
     if Glob.mode == 0:
         rf_classifier = RandomForestClassifier(
-            n_estimators=10, min_samples_leaf=300, n_jobs=-1)
+            n_estimators=100, n_jobs=-1)
     elif Glob.mode == 1:
         rf_classifier = RandomForestClassifier(
-            n_estimators=5, min_samples_leaf=5, n_jobs=-1)
+            n_estimators=2, max_depth=2, n_jobs=-1)
     elif Glob.mode == 2:
         rf_classifier = RandomForestClassifier(
-            n_estimators=5, min_samples_leaf=5, n_jobs=-1)
+            n_estimators=2, max_depth=2, n_jobs=-1)
     rf_classifier.fit(X_train, y_train)
     return rf_classifier
 

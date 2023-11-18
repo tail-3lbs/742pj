@@ -39,12 +39,11 @@ def get_validation_score():
     print('Val score: {:.3f}'.format(
         score(val_truth, submission, tolerances, **column_names)))
     for series_id in val['series_id'].unique():
-        print('Val score of {}: {:.3f}'.format(
-            series_id,
-            score(val_truth[val_truth['series_id'] == series_id],
-                  submission[submission['series_id'] == series_id],
-                  tolerances, **column_names)))
-        save_prediction(series_id,
+        perf_score = score(val_truth[val_truth['series_id'] == series_id],
+                           submission[submission['series_id'] == series_id],
+                           tolerances, **column_names)
+        print('Val score of {}: {:.3f}'.format(series_id, perf_score))
+        save_prediction(series_id, perf_score,
                         val[val['series_id'] == series_id],
                         submission[submission['series_id'] == series_id],
                         val_truth[val_truth['series_id'] == series_id])
@@ -61,7 +60,7 @@ def postprocess(val, periods=15*12):
     return val
 
 
-def save_prediction(series_id, val, submission, val_truth):
+def save_prediction(series_id, perf_score, val, submission, val_truth):
     for feature in features.features:
         fig, ax = plt.subplots(figsize=(16, 8))
         ax.plot(val['step'], val[feature], 'r-', alpha=.6, label=feature)
@@ -93,7 +92,7 @@ def save_prediction(series_id, val, submission, val_truth):
                 rotation=90, ha='center')
         ax.set_ylim([np.min(val[feature]), np.max(val[feature])])
         ax.legend()
-        ax.set_title(f'Series ID: {series_id}')
+        ax.set_title(f'Series ID: {series_id}, Perf score: {perf_score:.3f}')
         plt.savefig(f'../outputs/predictions_{series_id}_{feature}.jpg')
         plt.close()
 
