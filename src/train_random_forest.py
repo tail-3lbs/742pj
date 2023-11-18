@@ -88,7 +88,6 @@ def save_prediction(rf_classifier):
 
 def main():
     train = load_dataset()
-    train = features.filter_dataset(train)
     train, val = split_into_train_and_validation(train)
     print('Begin to make features')
     X_train, y_train = features.extend_features(train)
