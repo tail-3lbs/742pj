@@ -1,7 +1,6 @@
 import pandas as pd
+from common import steps_per_min
 
-
-steps_per_min = 12
 
 features2 = ['hour',
         'anglez',
