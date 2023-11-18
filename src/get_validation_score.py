@@ -7,7 +7,7 @@ import numpy as np
 import get_submission
 from metric import score
 import matplotlib.pyplot as plt
-import make_features
+import features
 from common import steps_per_min
 
 
@@ -62,7 +62,7 @@ def postprocess(val, periods=15*12):
 
 
 def save_prediction(series_id, val, submission, val_truth):
-    for feature in make_features.features:
+    for feature in features.features:
         fig, ax = plt.subplots(figsize=(16, 8))
         ax.plot(val['step'], val[feature], 'r-', alpha=.6, label=feature)
         ax.set_ylabel(feature)
