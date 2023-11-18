@@ -11,9 +11,9 @@ import numpy as np
 from metric import score
 import matplotlib.pyplot as plt
 import make_features
+from common import steps_per_min
 
 
-steps_per_min = 12
 least_sleep_time = 90*steps_per_min
 least_awake_time = 30*steps_per_min
 
