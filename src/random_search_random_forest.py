@@ -60,7 +60,7 @@ def main():
         # error_score='raise',
         estimator=RandomForestClassifier(),
         param_distributions=build_random_grid(),
-        n_iter=30, cv=5, verbose=2, random_state=42, n_jobs=-1)
+        n_iter=10, cv=5, verbose=4, n_jobs=-1)
     rf_random.fit(X_train, y_train)
     print(f'best_params_: {rf_random.best_params_}')
 
