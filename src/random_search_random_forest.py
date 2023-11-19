@@ -1,3 +1,8 @@
+'''
+The problem is that it takes around 2 hours to have one config tested.
+I.e., too time consuming.
+'''
+
 from datetime import datetime
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
