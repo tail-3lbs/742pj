@@ -44,19 +44,17 @@ def split_into_train_and_validation(train):
 def fit_classifier(X_train, y_train):
     if Glob.mode == 0:
         rf_classifier = RandomForestClassifier(
-            n_estimators=50, min_samples_leaf=300, n_jobs=-1)
+            max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20, n_jobs=-1)
     elif Glob.mode == 1:
-        rf_classifier = RandomForestClassifier(
-            n_estimators=2, max_depth=2, n_jobs=-1)
+        rf_classifier = RandomForestClassifier(n_estimators=2, n_jobs=-1)
     elif Glob.mode == 2:
-        rf_classifier = RandomForestClassifier(
-            n_estimators=2, max_depth=2, n_jobs=-1)
+        rf_classifier = RandomForestClassifier(n_estimators=2, n_jobs=-1)
     rf_classifier.fit(X_train, y_train)
     return rf_classifier
 
 
 def save_importance_plot(rf_classifier):
-    fig, ax = plt.subplots(figsize=(8, 4))
+    fig, ax = plt.subplots(figsize=(40, 20))
     ax.bar(features.features, rf_classifier.feature_importances_)
     ax.tick_params(axis='x', rotation=-35)
     ax.set_title('Random forest feature importance')
@@ -88,7 +86,6 @@ def save_prediction(rf_classifier):
 
 def main():
     train = load_dataset()
-    train = features.filter_dataset(train)
     train, val = split_into_train_and_validation(train)
     print('Begin to make features')
     X_train, y_train = features.extend_features(train)

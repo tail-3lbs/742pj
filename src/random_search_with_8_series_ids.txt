@@ -1,0 +1,90 @@
+8
+            series_id    step  ...    enmo  awake
+0        08db4255286f       0  ...  0.0447      1
+1        08db4255286f       1  ...  0.0443      1
+2        08db4255286f       2  ...  0.0483      1
+3        08db4255286f       3  ...  0.0680      1
+4        08db4255286f       4  ...  0.0768      1
+...               ...     ...  ...     ...    ...
+3380395  3452b878e596  535495  ...  0.0490      1
+3380396  3452b878e596  535496  ...  0.0516      1
+3380397  3452b878e596  535497  ...  0.0458      1
+3380398  3452b878e596  535498  ...  0.0420      1
+3380399  3452b878e596  535499  ...  0.0482      1
+
+[3380400 rows x 6 columns]
+Begin to make features
+--------------------------------------------------
+df.shape: (3380400, 6)
+X.shape: (3380400, 53)
+X.isnull().values.any(): False
+         hour  ...  enmo__std_centered_rolling_mean_diff_5
+0          10  ...                               -0.015500
+1          10  ...                               -0.011164
+2          10  ...                               -0.008819
+3          10  ...                               -0.008461
+4          10  ...                               -0.006583
+...       ...  ...                                     ...
+3380395    12  ...                                0.000302
+3380396    12  ...                                0.000356
+3380397    12  ...                                0.000269
+3380398    12  ...                                0.000141
+3380399    12  ...                                0.000000
+
+[3380400 rows x 53 columns]
+--------------------------------------------------
+Begin to fit
+{'n_estimators': [20, 53, 87, 121, 155, 188, 222, 256, 290, 324, 357, 391, 425, 459, 493, 526, 560, 594, 628, 662, 695, 729, 763, 797, 831, 864, 898, 932, 966, 1000], 'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, None], 'min_samples_split': [2, 5, 50, 100, 200, 300], 'min_samples_leaf': [1, 5, 50, 100, 200, 300]}
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[CV 5/5] END max_depth=10, min_samples_leaf=5, min_samples_split=200, n_estimators=87;, score=0.954 total time=23.3min
+[CV 2/5] END max_depth=80, min_samples_leaf=300, min_samples_split=300, n_estimators=425;, score=0.957 total time=162.5min
+[CV 3/5] END max_depth=40, min_samples_leaf=5, min_samples_split=50, n_estimators=966;, score=0.981 total time=387.0min
+[CV 2/5] END max_depth=10, min_samples_leaf=5, min_samples_split=200, n_estimators=87;, score=0.954 total time=22.7min
+[CV 4/5] END max_depth=50, min_samples_leaf=50, min_samples_split=200, n_estimators=357;, score=0.980 total time=150.8min
+[CV 1/5] END max_depth=40, min_samples_leaf=5, min_samples_split=50, n_estimators=966;, score=0.974 total time=415.4min
+[CV 4/5] END max_depth=10, min_samples_leaf=5, min_samples_split=200, n_estimators=87;, score=0.981 total time=23.2min
+[CV 1/5] END max_depth=80, min_samples_leaf=300, min_samples_split=300, n_estimators=425;, score=0.976 total time=167.6min
+[CV 4/5] END max_depth=40, min_samples_leaf=5, min_samples_split=50, n_estimators=966;, score=0.980 total time=417.9min
+[CV 5/5] END max_depth=None, min_samples_leaf=200, min_samples_split=100, n_estimators=290;, score=0.955 total time=120.5min
+[CV 2/5] END max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20;, score=0.957 total time= 7.9min
+[CV 3/5] END max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20;, score=0.979 total time= 8.0min
+[CV 5/5] END max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20;, score=0.955 total time= 8.3min
+[CV 3/5] END max_depth=70, min_samples_leaf=100, min_samples_split=100, n_estimators=763;, score=0.981 total time=289.5min
+[CV 3/5] END max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=493;, score=0.980 total time=183.2min
+[CV 3/5] END max_depth=10, min_samples_leaf=5, min_samples_split=200, n_estimators=87;, score=0.981 total time=22.5min
+[CV 3/5] END max_depth=50, min_samples_leaf=50, min_samples_split=200, n_estimators=357;, score=0.981 total time=138.2min
+[CV 5/5] END max_depth=70, min_samples_leaf=100, min_samples_split=100, n_estimators=763;, score=0.955 total time=317.9min
+[CV 2/5] END max_depth=100, min_samples_leaf=50, min_samples_split=200, n_estimators=121;, score=0.958 total time=47.7min
+[CV 1/5] END max_depth=110, min_samples_leaf=5, min_samples_split=2, n_estimators=290;, score=0.974 total time=114.6min
+[CV 2/5] END max_depth=50, min_samples_leaf=50, min_samples_split=200, n_estimators=357;, score=0.959 total time=144.2min
+[CV 2/5] END max_depth=70, min_samples_leaf=100, min_samples_split=100, n_estimators=763;, score=0.959 total time=301.9min
+[CV 4/5] END max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=493;, score=0.981 total time=195.4min
+[CV 1/5] END max_depth=None, min_samples_leaf=200, min_samples_split=100, n_estimators=290;, score=0.976 total time=118.6min
+[CV 5/5] END max_depth=80, min_samples_leaf=300, min_samples_split=300, n_estimators=425;, score=0.955 total time=168.3min
+[CV 2/5] END max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=493;, score=0.958 total time=200.4min
+[CV 3/5] END max_depth=100, min_samples_leaf=50, min_samples_split=200, n_estimators=121;, score=0.981 total time=45.8min
+[CV 2/5] END max_depth=110, min_samples_leaf=5, min_samples_split=2, n_estimators=290;, score=0.958 total time=109.3min
+[CV 2/5] END max_depth=None, min_samples_leaf=200, min_samples_split=100, n_estimators=290;, score=0.957 total time=114.5min
+[CV 4/5] END max_depth=80, min_samples_leaf=300, min_samples_split=300, n_estimators=425;, score=0.980 total time=167.5min
+[CV 1/5] END max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=493;, score=0.975 total time=208.2min
+[CV 4/5] END max_depth=100, min_samples_leaf=50, min_samples_split=200, n_estimators=121;, score=0.980 total time=50.0min
+[CV 3/5] END max_depth=110, min_samples_leaf=5, min_samples_split=2, n_estimators=290;, score=0.980 total time=103.9min
+[CV 4/5] END max_depth=None, min_samples_leaf=200, min_samples_split=100, n_estimators=290;, score=0.980 total time=120.2min
+[CV 1/5] END max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20;, score=0.970 total time= 8.3min
+[CV 4/5] END max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20;, score=0.981 total time= 8.4min
+[CV 1/5] END max_depth=70, min_samples_leaf=100, min_samples_split=100, n_estimators=763;, score=0.975 total time=316.7min
+[CV 5/5] END max_depth=20, min_samples_leaf=5, min_samples_split=2, n_estimators=493;, score=0.956 total time=194.6min
+[CV 3/5] END max_depth=None, min_samples_leaf=200, min_samples_split=100, n_estimators=290;, score=0.981 total time=110.6min
+[CV 3/5] END max_depth=80, min_samples_leaf=300, min_samples_split=300, n_estimators=425;, score=0.981 total time=153.5min
+[CV 5/5] END max_depth=40, min_samples_leaf=5, min_samples_split=50, n_estimators=966;, score=0.956 total time=405.9min
+[CV 1/5] END max_depth=50, min_samples_leaf=50, min_samples_split=200, n_estimators=357;, score=0.975 total time=149.6min
+[CV 4/5] END max_depth=70, min_samples_leaf=100, min_samples_split=100, n_estimators=763;, score=0.980 total time=321.1min
+[CV 1/5] END max_depth=100, min_samples_leaf=50, min_samples_split=200, n_estimators=121;, score=0.975 total time=49.8min
+[CV 5/5] END max_depth=100, min_samples_leaf=50, min_samples_split=200, n_estimators=121;, score=0.955 total time=50.1min
+[CV 4/5] END max_depth=110, min_samples_leaf=5, min_samples_split=2, n_estimators=290;, score=0.981 total time=109.6min
+[CV 1/5] END max_depth=10, min_samples_leaf=5, min_samples_split=200, n_estimators=87;, score=0.977 total time=22.8min
+[CV 5/5] END max_depth=50, min_samples_leaf=50, min_samples_split=200, n_estimators=357;, score=0.955 total time=151.9min
+[CV 2/5] END max_depth=40, min_samples_leaf=5, min_samples_split=50, n_estimators=966;, score=0.959 total time=397.0min
+[CV 5/5] END max_depth=110, min_samples_leaf=5, min_samples_split=2, n_estimators=290;, score=0.956 total time=110.1min
+best_params_: {'n_estimators': 357, 'min_samples_split': 200, 'min_samples_leaf': 50, 'max_depth': 50}
+Total time: 50261.09 seconds

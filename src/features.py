@@ -86,7 +86,14 @@ def make_features(df):
     df = __make_features5(df)
     return df
 
+
 def __make_features1(df):
+    # It's important to drop timezone here, as there are different timezones in
+    # the train dataset.
+    df['timestamp'] = pd.to_datetime(
+        df['timestamp']).apply(lambda t: t.tz_localize(None))
+    df['hour'] = df['timestamp'].dt.hour
+    df['second'] = df['timestamp'].dt.second
     return df
 
 
@@ -168,18 +175,6 @@ def __make_features5(df):
     df['anglez__std_centered_rolling_mean_diff_5'] = df['anglez__std_centered_rolling_mean_right_aligned_5'] - df['anglez__std_centered_rolling_mean_left_aligned_5']
     df['enmo__std_centered_rolling_mean_diff_5'] = df['enmo__std_centered_rolling_mean_right_aligned_5'] - df['enmo__std_centered_rolling_mean_left_aligned_5']
 
-    return df
-
-
-def filter_dataset(df):
-    print('Begin to filter dataset')
-    # It's important to drop timezone here, as there are different timezones in
-    # the train dataset.
-    df['timestamp'] = pd.to_datetime(
-        df['timestamp']).apply(lambda t: t.tz_localize(None))
-    df['hour'] = df['timestamp'].dt.hour
-    df['second'] = df['timestamp'].dt.second
-    print(df)
     return df
 
 
