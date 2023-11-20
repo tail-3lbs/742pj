@@ -165,4 +165,4 @@ cython_debug/
 child-mind*/*.csv
 outputs/*.csv
 *predictions*.jpg
-*feature_importances*.jpg
+outputs/*feature_importances*.jpg
