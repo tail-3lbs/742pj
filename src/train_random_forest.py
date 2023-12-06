@@ -44,7 +44,9 @@ def split_into_train_and_validation(train):
 def fit_classifier(X_train, y_train):
     if Glob.mode == 0:
         rf_classifier = RandomForestClassifier(
-            max_depth=50, min_samples_leaf=5, min_samples_split=5, n_estimators=20, n_jobs=-1)
+            n_estimators=20, max_depth=20,
+            min_samples_leaf=5, min_samples_split=5,
+            n_jobs=-1)
     elif Glob.mode == 1:
         rf_classifier = RandomForestClassifier(n_estimators=2, n_jobs=-1)
     elif Glob.mode == 2:
@@ -66,7 +68,6 @@ def save_importance_plot(rf_classifier):
 def save_validation(rf_classifier, X_val, val):
     val['not_awake'] = rf_classifier.predict_proba(X_val)[:, 0]
     val['awake'] = rf_classifier.predict_proba(X_val)[:, 1]
-    val['insleep'] = (val['not_awake'] > val['awake']).astype('bool')
     val.to_csv(f'../outputs/val.csv', index=False)
 
 
@@ -88,12 +89,12 @@ def main():
     train = load_dataset()
     train, val = split_into_train_and_validation(train)
     print('Begin to make features')
-    X_train, y_train = features.extend_features(train)
+    train, X_train, y_train = features.extend_features(train)
     print('Begin to fit')
     rf_classifier = fit_classifier(X_train, y_train)
     save_importance_plot(rf_classifier)
     print('Begin to validate and predict')
-    X_val, _ = features.extend_features(val)
+    val, X_val, _ = features.extend_features(val)
     save_validation(rf_classifier, X_val, val)
     # save_prediction(rf_classifier)
 
